@@ -13,6 +13,7 @@ app.use(helmet());
 app.use(cors());
 if (nodeEnv === 'development') app.use(morgan('dev'));
 
+// Health check — public
 app.get('/api/v1/health', (req, res) => {
   res.json({
     success: true,
@@ -24,8 +25,16 @@ app.get('/api/v1/health', (req, res) => {
   });
 });
 
+app.use('/api/v1/auth', require('./modules/auth/auth.routes'));
+app.use('/api/v1/users', require('./modules/user/user.routes'));
+app.use('/api/v1/categories', require('./modules/category/category.routes'));
+app.use('/api/v1/products', require('./modules/product/product.routes'));
+app.use('/api/v1/stock-movements', require('./modules/stockMovement/stockMovement.routes'));
 
+// 404 — must be after all routes
 app.use(notFound);
+
+// Central error handler — must be last, with 4 args
 app.use(errorHandler);
 
 module.exports = app;

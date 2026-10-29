@@ -1,3 +1,7 @@
+// Fix for Windows DNS resolution issues with MongoDB Atlas SRV records
+const dns = require('dns');
+dns.setServers(['1.1.1.1', '8.8.8.8']);
+
 const mongoose = require('mongoose');
 const { mongoUri } = require('./env');
 
